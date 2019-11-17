@@ -80,7 +80,7 @@ class Player {
         console.log(`Player ${objPlayer.id} - gone`);
         
         //Remove me from list of all players
-        Player.all = Player.all.filter(function(obj) {
+        Player.all = Player.all.filter((obj) => {
             return obj.socket !== socket;
         });           
     }  
