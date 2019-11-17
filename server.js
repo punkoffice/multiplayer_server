@@ -87,9 +87,8 @@ class Player {
     
     //Send message to all other players
     sendToEveryoneElse(json) {
-        var _this = this;
         for (var objPlayer of Player.all) {
-            if (objPlayer.socket !== _this.socket) {
+            if (objPlayer.socket !== this.socket) {
                 objPlayer.socket.send(json);
             }
         };        
