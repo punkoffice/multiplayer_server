@@ -1,0 +1,14 @@
+{
+  "name": "multiserver",
+  "version": "1.0.0",
+  "description": "Multiplayer game server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Marcus Milne",
+  "license": "ISC",
+  "dependencies": {
+    "ws": "^7.2.0"
+  }
+}
