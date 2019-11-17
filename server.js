@@ -22,7 +22,6 @@ class Player {
     constructor(socket) {
         this.authenticated = false;
         this.id = Player.all.length;
-        this.justCreated = true;
         this.socket = socket;
         Player.all.push(this);
         console.log(`Player ${this.id} - created`);
@@ -69,10 +68,6 @@ class Player {
                 this.z = transform.z;
                 this.rotation = transform.rotation;
                 this.sendToEveryoneElse(this.transformJSON());
-                if (this.justCreated) {
-                    this.justCreated = false;
-                    this.seeAll();
-                }
                 break;
         }
     }   
