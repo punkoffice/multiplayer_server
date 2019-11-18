@@ -1,7 +1,7 @@
 //Server
 const WebSocket = require('ws');
 const server = new WebSocket.Server({ host: '0.0.0.0', port: 5000 }, function() {
-    console.log("Listening on port 5000...");
+    console.log(`${new Date().toLocaleString()} - Listening on port 5000...`);
 });
 server.on('connection', (ws, req) => {
     new Player(ws, req.connection.remoteAddress);
@@ -25,12 +25,12 @@ class Player {
         this.IPaddress = IPaddress;
         this.socket = socket;
         Player.all.push(this);
-        console.log(`Player ${this.id} - with IP address ${this.IPaddress} created`);
+        console.log(`${new Date().toLocaleString()} - Player ${this.id} with IP address ${this.IPaddress} created`);
         
         //Player needs to be authenticated within 2 seconds
         this.authTimer = setTimeout(() => {
             if (!this.authenticated) {
-                console.log(`Player ${this.id} - authentication failed`);
+                console.log(`${new Date().toLocaleString()} - Player ${this.id} authentication failed`);
                 this.socket.close();
             }
         },2000);
@@ -56,7 +56,7 @@ class Player {
                 //Player is authenticated
                 this.username = json.data;
                 this.authenticated = true;
-                console.log(`Player ${this.id} - authenticaton passed for user ${this.username}`);
+                console.log(`${new Date().toLocaleString()} - Player ${this.id} authenticaton passed with username ${this.username}`);
                 this.socket.send('{"command":"auth","data":"true"}');
                 clearTimeout(this.authTimer);
                 this.seeAll();
@@ -78,7 +78,7 @@ class Player {
         var objPlayer = Player.all.find(x => x.socket === socket);
         var json = `{"command":"playerGone","data":${objPlayer.id}}`;
         objPlayer.sendToEveryoneElse(json);
-        console.log(`Player ${objPlayer.id} - gone`);
+        console.log(`${new Date().toLocaleString()} - Player ${objPlayer.id} gone`);
         
         //Remove me from list of all players
         Player.all = Player.all.filter((obj) => {
