@@ -3,8 +3,8 @@ const WebSocket = require('ws');
 const server = new WebSocket.Server({ host: '0.0.0.0', port: 5000 }, function() {
     console.log("Listening on port 5000...");
 });
-server.on('connection', ws => {
-    new Player(ws);
+server.on('connection', (ws, req) => {
+    new Player(ws, req.connection.remoteAddress);
     
     ws.on('message', message => {
         var objPlayer = Player.find(ws);
@@ -19,12 +19,13 @@ server.on('connection', ws => {
 //Players
 class Player {
     
-    constructor(socket) {
+    constructor(socket, IPaddress) {
         this.authenticated = false;
-        this.id = Player.all.length;
+        this.id = Player.globalID++;
+        this.IPaddress = IPaddress;
         this.socket = socket;
         Player.all.push(this);
-        console.log(`Player ${this.id} - created`);
+        console.log(`Player ${this.id} - with IP address ${this.IPaddress} created`);
         
         //Player needs to be authenticated within 2 seconds
         this.authTimer = setTimeout(() => {
@@ -55,7 +56,7 @@ class Player {
                 //Player is authenticated
                 this.username = json.data;
                 this.authenticated = true;
-                console.log(`Player ${this.id} - authenticaton passed`);
+                console.log(`Player ${this.id} - authenticaton passed for user ${this.username}`);
                 this.socket.send('{"command":"auth","data":"true"}');
                 clearTimeout(this.authTimer);
                 this.seeAll();
@@ -102,3 +103,4 @@ class Player {
 }
 
 Player.all = new Array();
+Player.globalID = 1;
