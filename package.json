@@ -9,6 +9,6 @@
   "author": "Marcus Milne",
   "license": "ISC",
   "dependencies": {
-    "ws": "^7.2.0"
+    "ws": "^7.4.6"
   }
 }
